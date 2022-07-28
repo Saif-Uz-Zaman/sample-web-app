@@ -6,6 +6,11 @@ pipeline {
         kind: Pod
         spec:
           containers:
+          - name: kubectl
+            image: dtzar/helm-kubectl:latest
+            command:
+            - cat
+            tty: true
           - name: docker
             image: docker:latest
             command:
@@ -14,10 +19,10 @@ pipeline {
             volumeMounts:
              - mountPath: /var/run/docker.sock
                name: docker-sock
-          volumes:
-          - name: docker-sock
-            hostPath:
-              path: /var/run/docker.sock
+            volumes:
+            - name: docker-sock
+              hostPath:
+                path: /var/run/docker.sock
         '''
     }
   }
@@ -62,23 +67,22 @@ pipeline {
       }
     }
 
-    stage('string (secret text)') {
+    stage('Deploy-To-Kubernetes') {
       steps {
-        script {
-          withCredentials([
-            string(
-              credentialsId: 'kube_config',
-              variable: 'joke')
-          ]) {
-            sh 'echo $joke'
-            sh 'echo $joke > sample.txt'
-            sh 'cat sample.txt'
-            print 'joke=' + joke
-            print 'joke.collect { it }=' + joke.collect { it }
+        container('kubectl') {
+          script {
+            withCredentials([
+              file(credentialsId: 'kube_config_file',
+                variable: 'config')
+            ]) {
+              sh 'cp \$config /root/.kube/config'
+              sh 'ls'
+              sh 'kubectl get po -n jenkins'
+            }
           }
         }
       }
-    }    
+    }   
   }
     post {
       always {
