@@ -75,7 +75,9 @@ pipeline {
               file(credentialsId: 'kube_config_file',
                 variable: 'config')
             ]) {
+              sh 'mkdir /root/.kube'
               sh 'cat $config > /root/.kube/config'
+              sh 'chmod 600 /root/.kube/config'
               sh 'ls'
               sh 'kubectl get po -n jenkins'
             }
