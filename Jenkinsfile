@@ -54,7 +54,7 @@ pipeline {
       }
     }
 
-    stage('Login-Into-Docker') {
+    stage('Login-Into-Docker-test') {
       steps {
         container('docker') {
           withCredentials([
