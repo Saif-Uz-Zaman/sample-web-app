@@ -29,11 +29,11 @@ pipeline {
         }
       }
     }
-    
+
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker build -t saifmaruf/sample-web-app:latest .'
+          sh 'docker build -t saifmaruf/sample-web-app:$BUILD_NUMBER .'
         }
       }
     }
@@ -57,7 +57,7 @@ pipeline {
      stage('Push-Images-Docker-to-DockerHub') {
       steps {
         container('docker') {
-          sh 'docker push saifmaruf/sample-web-app:latest'
+          sh 'docker push saifmaruf/sample-web-app:$BUILD_NUMBER'
       }
     }
      }
