@@ -39,13 +39,15 @@ pipeline {
 
     stage('Login-Into-Docker') {
       steps {
-        script {
-          withCredentials([
-            usernamePassword(credentialsId: 'docker_hub',
-              usernameVariable: 'username',
-              passwordVariable: 'password')
-          ]) {
-            sh 'docker login -u $username -p $password'
+        container('docker') {
+          script {
+            withCredentials([
+              usernamePassword(credentialsId: 'docker_hub',
+                usernameVariable: 'username',
+                passwordVariable: 'password')
+            ]) {
+              sh 'docker login -u $username -p $password'
+            }
           }
         }
       }
