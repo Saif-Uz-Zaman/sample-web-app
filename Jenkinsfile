@@ -29,6 +29,7 @@ pipeline {
         }
       }
     }
+    
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
@@ -53,18 +54,6 @@ pipeline {
       }
     }
 
-    stage('Login-Into-Docker-test') {
-      steps {
-        container('docker') {
-          withCredentials([
-            usernamePassword(credentialsId: 'docker_hub',
-              usernameVariable: 'DOCKER_HUB_USERNAME',
-              passwordVariable: 'DOCKER_HUB_PASSWORD')
-          ])
-          sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
-      }
-    }
-    }
      stage('Push-Images-Docker-to-DockerHub') {
       steps {
         container('docker') {
