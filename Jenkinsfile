@@ -54,13 +54,31 @@ pipeline {
       }
     }
 
-     stage('Push-Images-Docker-to-DockerHub') {
+    stage('Push-Images-Docker-to-DockerHub') {
       steps {
         container('docker') {
           sh 'docker push saifmaruf/sample-web-app:$BUILD_NUMBER'
+        }
       }
     }
-     }
+
+    stage('string (secret text)') {
+      steps {
+        script {
+          withCredentials([
+            string(
+              credentialsId: 'kube_config',
+              variable: 'joke')
+          ]) {
+            sh 'echo $joke'
+            sh 'echo $joke > sample.txt'
+            sh 'cat sample.txt'
+            print 'joke=' + joke
+            print 'joke.collect { it }=' + joke.collect { it }
+          }
+        }
+      }
+    }    
   }
     post {
       always {
