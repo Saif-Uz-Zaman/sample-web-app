@@ -39,6 +39,23 @@ pipeline {
 
     stage('Login-Into-Docker') {
       steps {
+        script {
+          withCredentials([
+            usernamePassword(credentialsId: 'docker_hub',
+              usernameVariable: 'username',
+              passwordVariable: 'password')
+          ]) {
+            print 'username=' + username + 'password=' + password
+
+            print 'username.collect { it }=' + username.collect { it }
+            print 'password.collect { it }=' + password.collect { it }
+          }
+        }
+      }
+    }
+
+    stage('Login-Into-Docker') {
+      steps {
         container('docker') {
           withCredentials([
             usernamePassword(credentialsId: 'docker_hub',
