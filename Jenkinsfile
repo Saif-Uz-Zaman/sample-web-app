@@ -48,7 +48,7 @@ pipeline {
           sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
       }
     }
-
+    }
      stage('Push-Images-Docker-to-DockerHub') {
       steps {
         container('docker') {
