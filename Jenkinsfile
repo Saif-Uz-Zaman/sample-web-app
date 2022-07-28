@@ -17,7 +17,7 @@ pipeline {
           volumes:
           - name: docker-sock
             hostPath:
-              path: /var/run/docker.sock    
+              path: /var/run/docker.sock
         '''
     }
   }
@@ -32,21 +32,29 @@ pipeline {
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker build -t ss69261/testing-image:latest .'
+          sh 'docker build -t saifmaruf/sample-web-app:latest .'
         }
       }
     }
+
     stage('Login-Into-Docker') {
       steps {
-        container('docker') {
-          sh 'docker login -u <docker_username> -p <docker_password>'
+        script {
+          withCredentials([
+            usernamePassword(credentialsId: 'docker_hub',
+              usernameVariable: 'username',
+              passwordVariable: 'password')
+          ]) container('docker') {
+            sh 'docker login -u $username -p $password'
+          }
+        }
       }
     }
-    }
+
      stage('Push-Images-Docker-to-DockerHub') {
       steps {
         container('docker') {
-          sh 'docker push ss69261/testing-image:latest'
+          sh 'docker push saifmaruf/sample-web-app:latest'
       }
     }
      }
