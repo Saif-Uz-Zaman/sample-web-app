@@ -2,6 +2,8 @@ pipeline {
   environment {
     IMAGE_REPOSITORY = "saifmaruf/sample-web-app"
     GIT_REPOSITORY = "https://github.com/Saif-Uz-Zaman/sample-web-app.git"
+    APPLICATION_NAME = "sample-web-app"
+    APPLICATION_HOST = "sampleapp.yourcluster.com"
   }
   agent {
     kubernetes {
@@ -31,13 +33,6 @@ pipeline {
     }
   }
   stages {
-    // stage('Clone') {
-    //   steps {
-    //     container('docker') {
-    //       git branch: 'master', changelog: false, poll: false, url: $GIT_REPOSITORY
-    //     }
-    //   }
-    // }
 
     stage('Build-Docker-Image') {
       steps {
@@ -93,7 +88,7 @@ pipeline {
       always {
         container('docker') {
           sh 'docker logout'
-      }
+        }
       }
     }
 }

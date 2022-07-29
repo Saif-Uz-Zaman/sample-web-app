@@ -1,36 +1,36 @@
-# Source: sample-web-app/templates/service.yaml
+# Source: $APPLICATION_NAME/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: sample-web-app
+  name: $APPLICATION_NAME
   labels:
-    run: sample-web-app
+    run: $APPLICATION_NAME
 spec:
   type: ClusterIP
   ports:
     - port: 80
   selector:
-    run: sample-web-app
+    run: $APPLICATION_NAME
 ---
-# Source: sample-web-app/templates/deployment.yaml
+# Source: $APPLICATION_NAME/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: sample-web-app
-  name: sample-web-app
+    run: $APPLICATION_NAME
+  name: $APPLICATION_NAME
 spec:
   selector:
     matchLabels:
-      run: sample-web-app
+      run: $APPLICATION_NAME
   replicas: 1
   template:
     metadata:
       labels:
-        run: sample-web-app
+        run: $APPLICATION_NAME
     spec:
       containers:
-        - name: sample-web-app
+        - name: $APPLICATION_NAME
           image: $IMAGE_REPOSITORY:$BUILD_NUMBER
           imagePullPolicy: Always
           ports:
@@ -43,21 +43,21 @@ spec:
               cpu: 250m
               memory: 600Mi
 ---
-# Source: sample-web-app/templates/ingress.yaml
+# Source: $APPLICATION_NAME/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-  name: ingress-sample-web-app
+  name: ingress-$APPLICATION_NAME
 spec:
   rules:
-    - host: sampleapp.yourcluster.com
+    - host: $APPLICATION_HOST
       http:
         paths:
           - backend:
               service:
-                name: sample-web-app
+                name: $APPLICATION_NAME
                 port:
                   number: 80
             pathType: ImplementationSpecific
