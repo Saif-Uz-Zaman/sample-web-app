@@ -3,7 +3,7 @@ pipeline {
     IMAGE_REPOSITORY = "saifmaruf/sample-web-app"
     GIT_REPOSITORY = "https://github.com/Saif-Uz-Zaman/sample-web-app.git"
     APPLICATION_NAME = "sample-web-app"
-    APPLICATION_HOST = "sampleapp.yourcluster.com"
+    APPLICATION_HOST = "sampleapp.somecluster.com"
   }
   agent {
     kubernetes {
