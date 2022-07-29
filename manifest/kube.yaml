@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: sample-web-app
-          image: saifmaruf/sample-web-app:$BUILD_NUMBER
+          image: IMAGE_REPOSITORY:$BUILD_NUMBER
           imagePullPolicy: Always
           ports:
             - containerPort: 80

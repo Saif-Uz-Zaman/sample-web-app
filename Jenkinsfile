@@ -1,4 +1,8 @@
 pipeline {
+  environment {
+    IMAGE_REPOSITORY = "saifmaruf/sample-web-app"
+    GIT_REPOSITORY = "https://github.com/Saif-Uz-Zaman/sample-web-app.git"
+  }
   agent {
     kubernetes {
       yaml '''
@@ -30,7 +34,7 @@ pipeline {
     stage('Clone') {
       steps {
         container('docker') {
-          git branch: 'master', changelog: false, poll: false, url: 'https://github.com/Saif-Uz-Zaman/sample-web-app.git'
+          git branch: 'master', changelog: false, poll: false, url: $GIT_REPOSITORY
         }
       }
     }
@@ -38,7 +42,7 @@ pipeline {
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker build -t saifmaruf/sample-web-app:$BUILD_NUMBER .'
+          sh 'docker build -t IMAGE_REPOSITORY:$BUILD_NUMBER .'
         }
       }
     }
@@ -62,7 +66,7 @@ pipeline {
     stage('Push-Images-Docker-to-DockerHub') {
       steps {
         container('docker') {
-          sh 'docker push saifmaruf/sample-web-app:$BUILD_NUMBER'
+          sh 'docker push IMAGE_REPOSITORY:$BUILD_NUMBER'
         }
       }
     }
@@ -78,7 +82,6 @@ pipeline {
               sh 'mkdir /root/.kube'
               sh 'cat $config > /root/.kube/config'
               sh 'chmod 600 /root/.kube/config'
-              sh 'ls'
               sh 'envsubst < manifest/kube.yaml | kubectl -n jenkins apply -f -'
             }
           }
