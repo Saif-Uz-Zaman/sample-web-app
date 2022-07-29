@@ -79,7 +79,7 @@ pipeline {
               sh 'cat $config > /root/.kube/config'
               sh 'chmod 600 /root/.kube/config'
               sh 'ls'
-              sh 'kubectl get po -n jenkins'
+              sh 'envsubst < manifest/kube.yaml | kubectl -n jenkins apply -f -'
             }
           }
         }
