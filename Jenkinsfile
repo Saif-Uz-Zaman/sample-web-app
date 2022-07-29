@@ -31,13 +31,13 @@ pipeline {
     }
   }
   stages {
-    stage('Clone') {
-      steps {
-        container('docker') {
-          git branch: 'master', changelog: false, poll: false, url: $GIT_REPOSITORY
-        }
-      }
-    }
+    // stage('Clone') {
+    //   steps {
+    //     container('docker') {
+    //       git branch: 'master', changelog: false, poll: false, url: $GIT_REPOSITORY
+    //     }
+    //   }
+    // }
 
     stage('Build-Docker-Image') {
       steps {
