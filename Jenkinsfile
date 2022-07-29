@@ -42,7 +42,7 @@ pipeline {
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker build -t IMAGE_REPOSITORY:$BUILD_NUMBER .'
+          sh 'docker build -t $IMAGE_REPOSITORY:$BUILD_NUMBER .'
         }
       }
     }
@@ -66,7 +66,7 @@ pipeline {
     stage('Push-Images-Docker-to-DockerHub') {
       steps {
         container('docker') {
-          sh 'docker push IMAGE_REPOSITORY:$BUILD_NUMBER'
+          sh 'docker push $IMAGE_REPOSITORY:$BUILD_NUMBER'
         }
       }
     }
